@@ -1,54 +1,73 @@
-📌 Overview
+# React + TypeScript + Vite
 
-The Todo List Application is a simple frontend project that allows users to manage daily tasks.
-This project focuses on practicing core frontend concepts such as state management, event handling, UI updates, and handling edge cases using JavaScript (or React).
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-🎯 Purpose
-Practice frontend thinking for Fresher / Junior developers
-Understand the flow: User Action → State Change → UI Update
-Improve skills in DOM manipulation / component-based architecture
-Handle common UI edge cases in real-world applications
+Currently, two official plugins are available:
 
-⚙️ Features
-➕ Add new todos
-✏️ Edit existing todos
-🗑️ Delete todos
-☑️ Mark todos as completed
-🚫 Input validation (prevent empty todos)
-⌨️ Keyboard support (Enter / Esc)
-📭 Empty state handling when no todos exist
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-🧠 Implementation Logic
-Each todo item has a unique id (index is not used)
-Todo list is managed in a centralized state
-Editing is allowed for only one todo at a time
-State is never mutated directly
-UI automatically re-renders when state changes
-🧩 Data Structure Example
-{
-  id: number,
-  text: string,
-  completed: boolean
-}
+## React Compiler
 
-🌱 Optional Enhancements
-Filter todos: All / Active / Completed
-Persist data using localStorage
-Display remaining todo count
-Undo delete action
-Responsive design for mobile devices
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-🚀 Technologies Used
-JavaScript (ES6+)
-HTML / CSS
-(or React / Next.js if implemented with a framework)
+## Expanding the ESLint configuration
 
-📚 Notes
-This project is built for learning purposes, with a focus on logic, structure, and user experience rather than complex UI design.
+If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
 
-📸 Demo
-<img width="1920" height="1093" alt="image" src="https://github.com/user-attachments/assets/740d6d24-c8ae-436a-9cee-af0d29f2b64c" />
+```js
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
 
+      // Remove tseslint.configs.recommended and replace with this
+      tseslint.configs.recommendedTypeChecked,
+      // Alternatively, use this for stricter rules
+      tseslint.configs.strictTypeChecked,
+      // Optionally, add this for stylistic rules
+      tseslint.configs.stylisticTypeChecked,
 
+      // Other configs...
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
+```
 
+You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
 
+```js
+// eslint.config.js
+import reactX from 'eslint-plugin-react-x'
+import reactDom from 'eslint-plugin-react-dom'
+
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
+      // Enable lint rules for React
+      reactX.configs['recommended-typescript'],
+      // Enable lint rules for React DOM
+      reactDom.configs.recommended,
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
+```
